@@ -3,7 +3,25 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.28307.168
 MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EnhancedStorage.Lib", "EnhancedStorage.Lib\EnhancedStorage.Lib\EnhancedStorage.Lib.csproj", "{D239A964-F044-43A5-8849-15593FCA2BD9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EnhancedStorage.Tests", "EnhancedStorage.Tests\EnhancedStorage.Tests.csproj", "{59B79944-BC7A-466C-B937-BC6873C8A158}"
+EndProject
 Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{D239A964-F044-43A5-8849-15593FCA2BD9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D239A964-F044-43A5-8849-15593FCA2BD9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D239A964-F044-43A5-8849-15593FCA2BD9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D239A964-F044-43A5-8849-15593FCA2BD9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{59B79944-BC7A-466C-B937-BC6873C8A158}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{59B79944-BC7A-466C-B937-BC6873C8A158}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{59B79944-BC7A-466C-B937-BC6873C8A158}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{59B79944-BC7A-466C-B937-BC6873C8A158}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
