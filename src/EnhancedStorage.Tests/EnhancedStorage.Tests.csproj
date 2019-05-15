@@ -55,15 +55,18 @@
     <PackageReference Include="MSTest.TestFramework">
       <Version>1.4.0</Version>
     </PackageReference>
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\EnhancedStorage.Lib\EnhancedStorage.Lib\EnhancedStorage.Lib.csproj">
-      <Project>{d239a964-f044-43a5-8849-15593fca2bd9}</Project>
-      <Name>EnhancedStorage.Lib</Name>
-    </ProjectReference>
+    <PackageReference Include="Shouldly">
+      <Version>3.0.2</Version>
+    </PackageReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\EnhancedStorage.Lib\EnhancedStorage.Lib.csproj">
+      <Project>{d239a964-f044-43a5-8849-15593fca2bd9}</Project>
+      <Name>EnhancedStorage.Lib</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

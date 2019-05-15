@@ -1,24 +1,23 @@
 ﻿using System;
 using EnhancedStorage.Lib.Exceptions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Shouldly;
 
 namespace EnhancedStorage.Tests
 {
     [TestClass]
     public class EnhancedStorageTests
     {
-        [ExpectedException(typeof(ArgumentException))]
         [TestMethod]
         public void Retrieve_ItemIdIsEmpty_ThrowsArgumentException()
         {
-            new Lib.EnhancedStorage().Retrieve(Guid.Empty);
+            Should.Throw<ArgumentException>(() => new Lib.EnhancedStorage().Retrieve(Guid.Empty));
         }
 
-        [ExpectedException(typeof(StoredItemNotFoundException))]
         [TestMethod]
         public void Retrieve_ItemNotFound_ThrowsStoredItemNotFoundException()
         {
-            new Lib.EnhancedStorage().Retrieve(Guid.NewGuid());
+            Should.Throw<StoredItemNotFoundException>(() => new Lib.EnhancedStorage().Retrieve(Guid.NewGuid()));
         }
 
         [TestMethod]
@@ -28,9 +27,9 @@ namespace EnhancedStorage.Tests
 
             var retrievedItem = new Lib.EnhancedStorage().Retrieve(itemId);
 
-            Assert.IsNotNull(retrievedItem);
-            Assert.IsNotNull(retrievedItem.Data);
-            Assert.IsTrue(retrievedItem.RetrievalTime > 0);
+            retrievedItem.ShouldNotBeNull();
+            retrievedItem.Data.ShouldNotBeNull();
+            retrievedItem.RetrievalTime.ShouldBeGreaterThan(1000000);
         }
     }
 }
