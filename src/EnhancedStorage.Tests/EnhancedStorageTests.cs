@@ -29,7 +29,43 @@ namespace EnhancedStorage.Tests
 
             retrievedItem.ShouldNotBeNull();
             retrievedItem.Data.ShouldNotBeNull();
-            retrievedItem.RetrievalTime.ShouldBeGreaterThan(1000000);
+            retrievedItem.RetrievalTime.ShouldBeGreaterThan(0);
+        }
+
+        [TestMethod]
+        public void Retrieve_LoggingNotSpecified_DoesNotLogRequest()
+        {
+            Guid itemId = new Guid("8BC1A026-DA1E-490C-ABDF-01AB694BC706");
+
+            var retrievedItem = new Lib.EnhancedStorage().Retrieve(itemId);
+
+            retrievedItem.Data.ShouldNotBeNull();
+
+            // How do we verify that the log was not written to???
+        }
+
+        [TestMethod]
+        public void Retrieve_LoggingNotRequired_DoesNotLogRequest()
+        {
+            Guid itemId = new Guid("8BC1A026-DA1E-490C-ABDF-01AB694BC706");
+
+            var retrievedItem = new Lib.EnhancedStorage().Retrieve(itemId, false);
+
+            retrievedItem.Data.ShouldNotBeNull();
+
+            // How do we verify that the log was not written to???
+        }
+
+        [TestMethod]
+        public void Retrieve_LoggingRequired_LogsRequest()
+        {
+            Guid itemId = new Guid("8BC1A026-DA1E-490C-ABDF-01AB694BC706");
+
+            var retrievedItem = new Lib.EnhancedStorage().Retrieve(itemId, true);
+
+            retrievedItem.Data.ShouldNotBeNull();
+
+            // How do we verify that the log was written to???
         }
     }
 }

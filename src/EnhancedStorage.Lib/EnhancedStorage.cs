@@ -3,6 +3,7 @@ using EnhancedStorage.Lib.Exceptions;
 using Exchange.EntLib.DataStorage;
 using Exchange.EntLib.DataStorage.Entities;
 using Exchange.EntLib.DataStorage.Exceptions;
+using Exchange.EntLib.Logging;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -14,12 +15,41 @@ namespace EnhancedStorage.Lib
 {
     public class EnhancedStorage
     {
-        public RetrievedItem Retrieve(Guid itemId)
+        public RetrievedItem Retrieve(Guid itemId, bool logRequest = false)
         {
             Stopwatch sw = Stopwatch.StartNew();
 
             ValidateItemId(itemId);
 
+            if (logRequest)
+            {
+                LogAccessRequest(itemId);
+            }
+
+            BasicDataItem dataItem = RetrieveItem(itemId);
+
+            var retrievedItem = MapDataItemToRetrievedItem(dataItem);
+            retrievedItem.RetrievalTime = sw.ElapsedMilliseconds;
+
+            return retrievedItem;
+        }
+
+        private void LogAccessRequest(Guid itemId)
+        {
+            LogEntry logEntry = new LogEntry()
+            {
+                CreatedBy = "EnhancedStorageLib",
+                EventId = 361,
+                Message = $"Access to storage item {itemId} requested at {DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss")}.",
+                Title = "EnhancedStorageLib Access",
+                Severity = TraceEventType.Warning
+            };
+
+            Logger.Write(logEntry);
+        }
+
+        private static BasicDataItem RetrieveItem(Guid itemId)
+        {
             BasicDataItem dataItem;
             try
             {
@@ -30,14 +60,10 @@ namespace EnhancedStorage.Lib
                 throw new StoredItemNotFoundException();
             }
 
-
-            var retrievedItem = MapDataItemToRetrievedItem(dataItem);
-            retrievedItem.RetrievalTime = sw.ElapsedMilliseconds;
-
-            return retrievedItem;
+            return dataItem;
         }
 
-        private RetrievedItem MapDataItemToRetrievedItem(BasicDataItem dataItem)
+        private static RetrievedItem MapDataItemToRetrievedItem(BasicDataItem dataItem)
         {
             return new RetrievedItem()
             {
@@ -46,7 +72,7 @@ namespace EnhancedStorage.Lib
             };
         }
 
-        private void ValidateItemId(Guid itemId)
+        private static void ValidateItemId(Guid itemId)
         {
             if (itemId.Equals(Guid.Empty))
             {

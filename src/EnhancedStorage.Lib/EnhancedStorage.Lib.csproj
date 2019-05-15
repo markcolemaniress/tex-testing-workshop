@@ -51,6 +51,9 @@
     <PackageReference Include="EntLib-DataStorage">
       <Version>3.0.6</Version>
     </PackageReference>
+    <PackageReference Include="EntLib-Logging">
+      <Version>3.0.29</Version>
+    </PackageReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
