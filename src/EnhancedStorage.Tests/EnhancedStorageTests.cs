@@ -1,12 +1,7 @@
-﻿using System;
-using System.Threading;
-using EnhancedStorage.Lib.Exceptions;
-using EnhancedStorage.Lib.Interfaces;
-using Exchange.EntLib.DataStorage.Exceptions;
-using Exchange.EntLib.Logging;
+﻿using EnhancedStorage.Lib.Exceptions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Moq;
 using Shouldly;
+using System;
 
 namespace EnhancedStorage.Tests
 {
@@ -22,88 +17,92 @@ namespace EnhancedStorage.Tests
         [TestMethod]
         public void Retrieve_ItemNotFound_ThrowsStoredItemNotFoundException()
         {
-            Mock<IRepository> mockRepo = new Mock<IRepository>();
-            mockRepo.Setup(m => m.GetData(It.IsAny<Guid>())).Throws(new StoredItemNotFoundException());
+            var scenario = new Scenario().WithMissingStorageItem();
+            var target = scenario.Build();
 
-            Should.Throw<StoredItemNotFoundException>(() => new Lib.EnhancedStorage(mockRepo.Object).Retrieve(Guid.NewGuid()));
+            Should.Throw<StoredItemNotFoundException>(() => target.Retrieve(Guid.NewGuid()));
         }
 
         [TestMethod]
         public void Retrieve_ItemIsFound_ReturnsRetrievedItem()
         {
-            Guid itemId = new Guid("8BC1A026-DA1E-490C-ABDF-01AB694BC706");
+            // Arrange
+            Guid itemId = Guid.NewGuid();
             const string DATA = "My data";
 
-            Mock<IRepository> mockRepo = new Mock<IRepository>();
-            mockRepo.Setup(m => m.GetData(It.IsAny<Guid>())).Returns(
-                () => 
-                {
-                    Thread.Sleep(2);
-                    return DATA;
-                });
+            var scenario = new Scenario().WithStorageItem(DATA);
+            var target = scenario.Build();
 
-            var retrievedItem = new Lib.EnhancedStorage(mockRepo.Object).Retrieve(itemId);
+            // Act
+            var retrievedItem = target.Retrieve(itemId);
 
+            // Assert
             retrievedItem.ShouldNotBeNull();
             retrievedItem.Data.ShouldBe(DATA);
             retrievedItem.RetrievalTime.ShouldBeGreaterThan(0);
-
-            mockRepo.Verify(m => m.GetData(It.Is<Guid>(g => g.Equals(itemId))), Times.Once());
+            scenario.VerifyStoredItem(itemId);
         }
 
         [TestMethod]
         public void Retrieve_LoggingNotSpecified_DoesNotLogRequest()
         {
-            Guid itemId = new Guid("8BC1A026-DA1E-490C-ABDF-01AB694BC706");
+            // Arrange
+            Guid itemId = Guid.NewGuid();
             const string DATA = "My data";
 
-            Mock<IRepository> mockRepo = new Mock<IRepository>();
-            mockRepo.Setup(m => m.GetData(It.IsAny<Guid>())).Returns(DATA);
-            mockRepo.Setup(m => m.WriteToLog(It.IsAny<LogEntry>()));
+            var scenario = new Scenario().WithStorageItem(DATA)
+                                        .WithLogging();
+            var target = scenario.Build();
 
-            var retrievedItem = new Lib.EnhancedStorage(mockRepo.Object).Retrieve(itemId);
+            // Act
+            var retrievedItem = target.Retrieve(itemId);
 
+            // Assert
             retrievedItem.Data.ShouldBe(DATA);
-
-            mockRepo.Verify(m => m.GetData(It.Is<Guid>(g => g.Equals(itemId))), Times.Once());
-            mockRepo.Verify(m => m.WriteToLog(It.IsAny<LogEntry>()), Times.Never());
+            scenario.VerifyStoredItem(itemId);
+            scenario.VerifyNotLogged();
         }
 
         [TestMethod]
         public void Retrieve_LoggingNotRequired_DoesNotLogRequest()
         {
-            Guid itemId = new Guid("8BC1A026-DA1E-490C-ABDF-01AB694BC706");
+            // Arrange
+            Guid itemId = Guid.NewGuid();
             const string DATA = "My data";
 
-            Mock<IRepository> mockRepo = new Mock<IRepository>();
-            mockRepo.Setup(m => m.GetData(It.IsAny<Guid>())).Returns(DATA);
-            mockRepo.Setup(m => m.WriteToLog(It.IsAny<LogEntry>()));
+            var scenario = new Scenario().WithStorageItem(DATA)
+                                        .WithLogging();
+            var target = scenario.Build();
 
-            var retrievedItem = new Lib.EnhancedStorage(mockRepo.Object).Retrieve(itemId, false);
+            // Act
+            var retrievedItem = target.Retrieve(itemId, false);
 
+            // Assert
             retrievedItem.Data.ShouldNotBeNull();
-
             retrievedItem.Data.ShouldBe(DATA);
-
-            mockRepo.Verify(m => m.GetData(It.Is<Guid>(g => g.Equals(itemId))), Times.Once());
-            mockRepo.Verify(m => m.WriteToLog(It.IsAny<LogEntry>()), Times.Never());
+            scenario.VerifyStoredItem(itemId);
+            scenario.VerifyNotLogged();
         }
 
         [TestMethod]
         public void Retrieve_LoggingRequired_LogsRequest()
         {
-            Guid itemId = new Guid("8BC1A026-DA1E-490C-ABDF-01AB694BC706");
+            // Arrange
+            Guid itemId = Guid.NewGuid();
             const string DATA = "My data";
 
-            Mock<IRepository> mockRepo = new Mock<IRepository>();
-            mockRepo.Setup(m => m.GetData(It.IsAny<Guid>())).Returns(DATA);
-            mockRepo.Setup(m => m.WriteToLog(It.IsAny<LogEntry>()));
+            var scenario = new Scenario().WithStorageItem(DATA)
+                                        .WithLogging();
+            var target = scenario.Build();
 
-            var retrievedItem = new Lib.EnhancedStorage(mockRepo.Object).Retrieve(itemId, true);
+            // Act
+            var retrievedItem = target.Retrieve(itemId, true);
 
+            // Assert
             retrievedItem.Data.ShouldNotBeNull();
-
-            mockRepo.Verify(m => m.WriteToLog(It.Is<LogEntry>(l => l.Title == "EnhancedStorageLib Access")), Times.Once());
+            retrievedItem.Data.ShouldBe(DATA);
+            scenario.VerifyStoredItem(itemId);
+            scenario.VerifyLog();
         }
     }
 }

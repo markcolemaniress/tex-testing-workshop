@@ -44,6 +44,7 @@
   <ItemGroup>
     <Compile Include="EnhancedStorageTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Scenario.cs" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Moq">
@@ -57,6 +58,9 @@
     </PackageReference>
     <PackageReference Include="Shouldly">
       <Version>3.0.2</Version>
+    </PackageReference>
+    <PackageReference Include="TestHelpers-ObjectBuilder-Extensions">
+      <Version>1.1.67</Version>
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
