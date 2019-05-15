@@ -3,42 +3,54 @@ using System.ServiceModel;
 using BusinessContractSearch.Entities;
 using Exchange.Exweb.BusinessContractDataService.BusinessContractDataServiceProxy;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Shouldly;
 
 namespace BusinessContractSearch.Test
 {
     [TestClass]
     public class BusinessContractSearchTests
     {
+        [ExpectedException(typeof(ArgumentNullException))]
         [TestMethod]
         public void FindByName_SearchCriteriaIsNull_ThrowsArgumentNullException()
         {
-            Should.Throw<ArgumentNullException>(() => new BusinessContractSearch().FindByName(null))
-                .Message.ShouldContain("searchCriteria");
+            new BusinessContractSearch().FindByName(null);
         }
 
+        [ExpectedException(typeof(ArgumentException))]
         [TestMethod]
         public void FindByName_SearchCriteriaNameIsNull_ThrowsArgumentException()
         {
             var searchCriteria = new SearchCriteria();
-            Should.Throw<ArgumentException>(() => new BusinessContractSearch().FindByName(searchCriteria))
-                .Message.ShouldContain("ContractName");
+            new BusinessContractSearch().FindByName(searchCriteria);
         }
 
+        [ExpectedException(typeof(ArgumentException))]
         [TestMethod]
         public void FindByName_SearchCriteriaNameIsEmpty_ThrowsArgumentException()
         {
             var searchCriteria = new SearchCriteria() { ContractName = string.Empty };
-            Should.Throw<ArgumentException>(() => new BusinessContractSearch().FindByName(searchCriteria))
-                .Message.ShouldContain("ContractName");
+            new BusinessContractSearch().FindByName(searchCriteria);
         }
 
         [TestMethod]
         public void FindByName_ContractNotFound_ThrowsFaultExceptionOfBusinessContractNotFoundFault()
         {
-            var searchCriteria = new SearchCriteria() { ContractName = "adsjhgfasdjghfsadjhgf" };
-            Should.Throw<FaultException<BusinessContractNotFoundFault>>(() => new BusinessContractSearch().FindByName(searchCriteria))
-                .Message.ShouldContain("Business Contract cannot be found");
+            var searchCriteria = new SearchCriteria()
+            {
+                ContractName = "ghchgfscadhgfchasdfc",
+                IntegratorName = "Demo",
+                ServiceName = "GetWOLQuoteV2"
+            };
+
+            try
+            {
+                new BusinessContractSearch().FindByName(searchCriteria);
+                Assert.Fail("Expected exception was not thrown");
+            }
+            catch (FaultException<BusinessContractNotFoundFault> ex)
+            {
+                Assert.IsTrue(ex.Message.Contains("Business Contract cannot be found"));
+            }
         }
 
         [TestMethod]
@@ -53,10 +65,10 @@ namespace BusinessContractSearch.Test
 
             var result = new BusinessContractSearch().FindByName(searchCriteria);
 
-            result.ShouldNotBeNull();
-            result.Contract.Name.ShouldBe(searchCriteria.ContractName);
-            result.Contract.BusinessContractId.ShouldNotBe(Guid.Empty);
-            result.SearchTime.ShouldBeGreaterThan(0);
+            Assert.IsNotNull(result);
+            Assert.AreEqual(searchCriteria.ContractName, result.Contract.Name);
+            Assert.AreNotEqual(Guid.Empty, result.Contract.BusinessContractId);
+            Assert.IsTrue(result.SearchTime > 0);
         }
     }
 }
