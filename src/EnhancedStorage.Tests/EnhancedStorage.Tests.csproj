@@ -46,8 +46,8 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="EntLib-Configuration-Sql">
-      <Version>3.0.14</Version>
+    <PackageReference Include="Moq">
+      <Version>4.10.1</Version>
     </PackageReference>
     <PackageReference Include="MSTest.TestAdapter">
       <Version>1.4.0</Version>
@@ -58,9 +58,6 @@
     <PackageReference Include="Shouldly">
       <Version>3.0.2</Version>
     </PackageReference>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\EnhancedStorage.Lib\EnhancedStorage.Lib.csproj">

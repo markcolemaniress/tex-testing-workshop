@@ -45,7 +45,9 @@
     <Compile Include="Entities\RetrievedItem.cs" />
     <Compile Include="Entities\StoredItem.cs" />
     <Compile Include="Exceptions\StoredItemNotFoundException.cs" />
+    <Compile Include="Interfaces\IRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Repository.cs" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="EntLib-DataStorage">

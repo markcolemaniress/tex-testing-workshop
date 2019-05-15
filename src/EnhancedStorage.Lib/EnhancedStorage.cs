@@ -1,20 +1,23 @@
 ﻿using EnhancedStorage.Lib.Entities;
 using EnhancedStorage.Lib.Exceptions;
-using Exchange.EntLib.DataStorage;
+using EnhancedStorage.Lib.Interfaces;
 using Exchange.EntLib.DataStorage.Entities;
 using Exchange.EntLib.DataStorage.Exceptions;
 using Exchange.EntLib.Logging;
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace EnhancedStorage.Lib
 {
     public class EnhancedStorage
     {
+        private readonly IRepository repository;
+
+        public EnhancedStorage(IRepository repository = null)
+        {
+            this.repository = (repository == null ? new Repository() : repository);
+        }
+
         public RetrievedItem Retrieve(Guid itemId, bool logRequest = false)
         {
             Stopwatch sw = Stopwatch.StartNew();
@@ -26,12 +29,11 @@ namespace EnhancedStorage.Lib
                 LogAccessRequest(itemId);
             }
 
-            BasicDataItem dataItem = RetrieveItem(itemId);
-
-            var retrievedItem = MapDataItemToRetrievedItem(dataItem);
-            retrievedItem.RetrievalTime = sw.ElapsedMilliseconds;
-
-            return retrievedItem;
+            return new RetrievedItem()
+            {
+                Data = RetrieveItem(itemId),
+                RetrievalTime = sw.ElapsedMilliseconds
+            };
         }
 
         private void LogAccessRequest(Guid itemId)
@@ -45,31 +47,12 @@ namespace EnhancedStorage.Lib
                 Severity = TraceEventType.Warning
             };
 
-            Logger.Write(logEntry);
+            this.repository.WriteToLog(logEntry);
         }
 
-        private static BasicDataItem RetrieveItem(Guid itemId)
+        private object RetrieveItem(Guid itemId)
         {
-            BasicDataItem dataItem;
-            try
-            {
-                dataItem = DataStorageLibrary.GetData(itemId);
-            }
-            catch (DataItemNotFoundException)
-            {
-                throw new StoredItemNotFoundException();
-            }
-
-            return dataItem;
-        }
-
-        private static RetrievedItem MapDataItemToRetrievedItem(BasicDataItem dataItem)
-        {
-            return new RetrievedItem()
-            {
-                ItemId = dataItem.DataItemId,
-                Data = dataItem.Data
-            };
+            return this.repository.GetData(itemId);
         }
 
         private static void ValidateItemId(Guid itemId)
