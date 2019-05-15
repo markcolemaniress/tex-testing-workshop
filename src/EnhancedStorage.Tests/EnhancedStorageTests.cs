@@ -29,7 +29,7 @@ namespace EnhancedStorage.Tests
 
             retrievedItem.ShouldNotBeNull();
             retrievedItem.Data.ShouldNotBeNull();
-            retrievedItem.RetrievalTime.ShouldBeGreaterThan(1000000);
+            retrievedItem.RetrievalTime.ShouldBeGreaterThan(0);
         }
     }
 }
