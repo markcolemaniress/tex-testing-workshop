@@ -7,6 +7,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EnhancedStorage.Lib", "Enha
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EnhancedStorage.Tests", "EnhancedStorage.Tests\EnhancedStorage.Tests.csproj", "{59B79944-BC7A-466C-B937-BC6873C8A158}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EnhancedStorage.IntegrationTests", "EnhancedStorage.IntegrationTests\EnhancedStorage.IntegrationTests.csproj", "{1B6FAEE8-6D1A-4AF1-8A30-374EE6899D1F}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{8CABAFD6-98D8-4ED7-B1AC-AFBBEDAE46C9}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,9 +25,17 @@ Global
 		{59B79944-BC7A-466C-B937-BC6873C8A158}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{59B79944-BC7A-466C-B937-BC6873C8A158}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{59B79944-BC7A-466C-B937-BC6873C8A158}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1B6FAEE8-6D1A-4AF1-8A30-374EE6899D1F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1B6FAEE8-6D1A-4AF1-8A30-374EE6899D1F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1B6FAEE8-6D1A-4AF1-8A30-374EE6899D1F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1B6FAEE8-6D1A-4AF1-8A30-374EE6899D1F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{59B79944-BC7A-466C-B937-BC6873C8A158} = {8CABAFD6-98D8-4ED7-B1AC-AFBBEDAE46C9}
+		{1B6FAEE8-6D1A-4AF1-8A30-374EE6899D1F} = {8CABAFD6-98D8-4ED7-B1AC-AFBBEDAE46C9}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {8FC213DF-1BEC-43E4-8143-7C796442A237}
