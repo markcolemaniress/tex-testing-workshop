@@ -43,6 +43,7 @@ namespace EnhancedStorage.IntegrationTests
             catch (Exception ex)
             {
                 Console.WriteLine(ex.ToString());
+                throw;
             }
             finally
             {
