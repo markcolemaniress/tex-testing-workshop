@@ -31,7 +31,7 @@ namespace EnhancedStorage.Tests
         [TestMethod]
         public void Retrieve_ItemIsFound_ReturnsRetrievedItem()
         {
-            Guid itemId = new Guid("8BC1A026-DA1E-490C-ABDF-01AB694BC706");
+            Guid itemId = Guid.NewGuid();
             const string DATA = "My data";
 
             Mock<IRepository> mockRepo = new Mock<IRepository>();
@@ -54,7 +54,7 @@ namespace EnhancedStorage.Tests
         [TestMethod]
         public void Retrieve_LoggingNotSpecified_DoesNotLogRequest()
         {
-            Guid itemId = new Guid("8BC1A026-DA1E-490C-ABDF-01AB694BC706");
+            Guid itemId = Guid.NewGuid();
             const string DATA = "My data";
 
             Mock<IRepository> mockRepo = new Mock<IRepository>();
@@ -72,7 +72,7 @@ namespace EnhancedStorage.Tests
         [TestMethod]
         public void Retrieve_LoggingNotRequired_DoesNotLogRequest()
         {
-            Guid itemId = new Guid("8BC1A026-DA1E-490C-ABDF-01AB694BC706");
+            Guid itemId = Guid.NewGuid();
             const string DATA = "My data";
 
             Mock<IRepository> mockRepo = new Mock<IRepository>();
@@ -92,7 +92,7 @@ namespace EnhancedStorage.Tests
         [TestMethod]
         public void Retrieve_LoggingRequired_LogsRequest()
         {
-            Guid itemId = new Guid("8BC1A026-DA1E-490C-ABDF-01AB694BC706");
+            Guid itemId = Guid.NewGuid();
             const string DATA = "My data";
 
             Mock<IRepository> mockRepo = new Mock<IRepository>();
