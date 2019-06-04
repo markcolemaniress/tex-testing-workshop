@@ -33,6 +33,7 @@ namespace EnhancedStorage.Lib
 
         private static string GetTransmissionData(Guid contractId)
         {
+            // Fake target contract data
             return File.ReadAllText($"C:\\Temp\\{contractId}.dat");
         }
     }

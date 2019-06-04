@@ -29,6 +29,7 @@ namespace EnhancedStorage.IntegrationTests
                             .WithBody(responseStorageId.ToString())
                );
 
+            // Fake target contract data
             File.WriteAllText($"C:\\Temp\\{contractId}.dat", $"{server.Urls[0]}/remotestorage/test");
 
             try
