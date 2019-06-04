@@ -15,16 +15,11 @@ namespace EnhancedStorage.Lib
 {
     public class EnhancedStorage
     {
-        public RetrievedItem Retrieve(Guid itemId, bool logRequest = false)
+        public RetrievedItem Retrieve(Guid itemId)
         {
             Stopwatch sw = Stopwatch.StartNew();
 
             ValidateItemId(itemId);
-
-            if (logRequest)
-            {
-                LogAccessRequest(itemId);
-            }
 
             BasicDataItem dataItem = RetrieveItem(itemId);
 
@@ -32,20 +27,6 @@ namespace EnhancedStorage.Lib
             retrievedItem.RetrievalTime = sw.ElapsedMilliseconds;
 
             return retrievedItem;
-        }
-
-        private void LogAccessRequest(Guid itemId)
-        {
-            LogEntry logEntry = new LogEntry()
-            {
-                CreatedBy = "EnhancedStorageLib",
-                EventId = 361,
-                Message = $"Access to storage item {itemId} requested at {DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss")}.",
-                Title = "EnhancedStorageLib Access",
-                Severity = TraceEventType.Warning
-            };
-
-            Logger.Write(logEntry);
         }
 
         private static BasicDataItem RetrieveItem(Guid itemId)
