@@ -19,18 +19,10 @@ namespace EnhancedStorage.IntegrationTests
             Guid responseStorageId = Guid.NewGuid();
             Guid contractId = Guid.NewGuid();
 
-            var server = FluentMockServer.Start();
-            server.Given(Request.Create()
-                            .WithPath("/remotestorage/test")
-                            .UsingPost())
-                  .RespondWith(Response.Create()
-                            .WithStatusCode(200)
-                            .WithHeader("Content-Type", "text/plain")
-                            .WithBody(responseStorageId.ToString())
-               );
+            var server = CreateServer(responseStorageId);
 
-            // Fake target contract data
-            File.WriteAllText($"C:\\Temp\\{contractId}.dat", $"{server.Urls[0]}/remotestorage/test");
+            CreateTargetContract(contractId, 
+                                $"{server.Urls[0]}/remotestorage/test");
 
             try
             {
@@ -48,8 +40,37 @@ namespace EnhancedStorage.IntegrationTests
             finally
             {
                 server.Stop();
+                RemoveTargetContract(contractId);
             }
 
+        }
+
+        private FluentMockServer CreateServer(Guid responseStorageId)
+        {
+            var server = FluentMockServer.Start();
+
+            server.Given(Request.Create()
+                            .WithPath("/remotestorage/test")
+                            .UsingPost())
+                  .RespondWith(Response.Create()
+                            .WithStatusCode(200)
+                            .WithHeader("Content-Type", "text/plain")
+                            .WithBody(responseStorageId.ToString())
+               );
+
+            return server;
+        }
+
+        private void CreateTargetContract(Guid contractId, string url)
+        {
+            // Store fake target contract data
+            File.WriteAllText($"C:\\Temp\\{contractId}.dat", url);
+        }
+
+        private void RemoveTargetContract(Guid contractId)
+        {
+            // Store fake target contract data
+            File.Delete($"C:\\Temp\\{contractId}.dat");
         }
     }
 }
