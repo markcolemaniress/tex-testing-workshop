@@ -23,9 +23,11 @@ namespace EnhancedStorage.Tests
         public void Retrieve_ItemNotFound_ThrowsStoredItemNotFoundException()
         {
             Mock<IRepository> mockRepo = new Mock<IRepository>();
-            mockRepo.Setup(m => m.GetData(It.IsAny<Guid>())).Throws(new StoredItemNotFoundException());
+            mockRepo.Setup(m => m.GetData(It.IsAny<Guid>()))
+                    .Throws(new StoredItemNotFoundException());
 
-            Should.Throw<StoredItemNotFoundException>(() => new Lib.EnhancedStorage(mockRepo.Object).Retrieve(Guid.NewGuid()));
+            Should.Throw<StoredItemNotFoundException>(
+                () => new Lib.EnhancedStorage(mockRepo.Object).Retrieve(Guid.NewGuid()));
         }
 
         [TestMethod]
