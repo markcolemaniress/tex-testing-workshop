@@ -49,17 +49,23 @@ namespace EnhancedStorage.Tests
 
         internal void VerifyStoredItem(Guid itemId)
         {
-            this.GetMock<IRepository>().Verify(m => m.GetData(It.Is<Guid>(g => g == itemId)), Times.Once());
+            this.GetMock<IRepository>()
+                .Verify(m => m.GetData(It.Is<Guid>(g => g == itemId)), 
+                Times.Once());
         }
 
         internal void VerifyLog(string title = "EnhancedStorageLib Access")
         {
-            this.GetMock<IRepository>().Verify(m => m.WriteToLog(It.Is<LogEntry>(l => l.Title == title)), Times.Once());
+            this.GetMock<IRepository>()
+                .Verify(m => m.WriteToLog(It.Is<LogEntry>(l => l.Title == title)), 
+                Times.Once());
         }
 
         internal void VerifyNotLogged()
         {
-            this.GetMock<IRepository>().Verify(m => m.WriteToLog(It.IsAny<LogEntry>()), Times.Never());
+            this.GetMock<IRepository>()
+                .Verify(m => m.WriteToLog(It.IsAny<LogEntry>()), 
+                Times.Never());
         }
     }
 }
